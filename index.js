@@ -1,37 +1,37 @@
-class Player {
-    constructor(name, position) {
+class Member {
+    constructor(name, instrument) {
         this.name = name;
-        this.position = position;
+        this.instrument = instrument;
     } 
 
     describe() {
-        return `${this.name} plays ${this.position}.`;
+        return `${this.name} plays ${this.instrument}.`;
     }
 }
 
-class Team {
+class Band {
     constructor(name) {
         this.name = name;
-        this.players = [];
+        this.members = [];
     }
 
-    addPlayer(player) {
-        if (player instanceof Player) {
-            this.players.push(player);
+    addMember(member) {
+        if (member instanceof Member) {
+            this.members.push(member);
         } else {
-            throw new Error(`You can only add an instance of Player. Argument is not a player: ${player}`);
+            throw new Error(`You can only add an instance of Member. Argument is not a member: ${member}`);
         }
     }
 
     describe() {
-        return `${this.name} has ${this.players.length} players.`;
+        return `${this.name} has ${this.members.length} members.`;
     }
 }
 
 class Menu {
     constructor() {
-        this.teams = [];
-        this.selectedTeam = null;
+        this.bands = [];
+        this.selectedBand = null;
     }
 
     start() {
@@ -40,16 +40,16 @@ class Menu {
         while (selection != 0) {
             switch (selection) {
                 case '1':
-                    this.createTeam();
+                    this.createBand();
                     break;
                 case '2':
-                    this.viewTeam();
+                    this.viewBand();
                     break;
                 case '3':
-                    this.deleteTeam();
+                    this.deleteBand();
                     break;
                 case '4':
-                    this.displayTeams();
+                    this.displayBands();
                     break;
                 default:
                     selection = 0;
@@ -62,78 +62,78 @@ class Menu {
 
     showMainMenuOptions() {
         return prompt(`
-        0) exit
-        1) create new team
-        2) view team
-        3) delete team
-        4) display all teams
+        0) Exit
+        1) Create New Band
+        2) View Band
+        3) Delete Band
+        4) Display all Bands
         `);
     }
 
-    showTeamMenuOptions(teamInfo) {
+    showBandMenuOptions(BandInfo) {
         return prompt(` 
         0) back
-        1) create player
-        2) delete player
+        1) Create Member
+        2) Delete Member
         -----------------------
-        ${teamInfo}
+        ${BandInfo}
         `);
     }
 
 
-    displayTeams() {
-        let teamString = '';
-        for (let i = 0; i < this.teams.length; i++) {
-            teamString += i + ') ' + this.teams[i].name +'\n';
+    displayBands() {
+        let bandString = '';
+        for (let i = 0; i < this.bands.length; i++) {
+            bandString += i + ') ' + this.bands[i].name +'\n';
         }
 
-        alert(teamString);
+        alert(bandString);
     }
 
-    createTeam() {
-        let name = prompt('Enter name for new team:');
-        this.teams.push(new Team(name));
+    createBand() {
+        let name = prompt('Enter name for new band:');
+        this.bands.push(new Band(name));
     }
 
-    viewTeam() {
-        let index = prompt('Enter the index of the team you wish to view:');
-        if (index > -1 && index < this.teams.length) {
-            this.selectedTeam = this.teams[index];
-            let description = 'Team Name: ' + this.selectedTeam.name + '\n';
+    viewBand() {
+        let index = prompt('Enter the index of the band you wish to view:');
+        if (index > -1 && index < this.bands.length) {
+            this.selectedBand = this.bands[index];
+            let description = 'Band Name: ' + this.selectedBand.name + '\n';
         
-            for (let i = 0; i < this.selectedTeam.players.length; i++) {
-                description += i + ') ' + this.selectedTeam.players[i].name 
-                + ' - ' + this.selectedTeam.players[i].position + '\n';
+            for (let i = 0; i < this.selectedBand.members.length; i++) {
+                description += i + ') ' + this.selectedBand.members[i].name 
+                + ' - ' + this.selectedBand.members[i].instrument + '\n';
             }
 
-            let selection = this.showTeamMenuOptions(description);
+            let selection = this.showBandMenuOptions(description);
             switch (selection) {
                 case '1':
-                    this.createPlayer();
+                    this.createMember();
                     break;
                 case '2':
-                    this.deletePlayer();
+                    this.deleteMember();
             }
         }
     }
 
-    deleteTeam() {
-        let index = prompt('Enter the index of the team you wish to delete:');
-        if (index > -1 && index < this.teams.length) {
-            this.teams.splice(index, 1);
+    deleteBand() {
+        let index = prompt('Enter the index of the band you wish to delete:');
+        if (index > -1 && index < this.bands.length) {
+            this.bands.splice(index, 1);
         }
     }
 
-    createPlayer() {
-        let name = prompt('Enter name for new player:');
-        let position = prompt('Enter position for new player:');
-        this.selectedTeam.players.push(new Player(name, position));
+    createMember() {
+        let name = prompt('Enter name for new member:');
+        let instrument = prompt('Enter instrument for new player:');
+        this.selectedBand.members.push(new Member(name, instrument));
     }
 
     deletePlayer() {
-        let index = prompt('Enter the index of the player you wish to delete:');
-        if (index > -1 && index < this.selectedTeam.players.length) {
-            this.selectedTeam.players.splice(index, 1);
+        let index = prompt('Enter the index of the member you wish to delete:');
+        if (index > -1 && index < this.selectedBand.members.length) {
+            this.selectedBand.members.splice(index, 1);
         }
     }
 }
